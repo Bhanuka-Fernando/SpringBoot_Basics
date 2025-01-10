@@ -1,16 +1,37 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.DTO.UserDTO;
+import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
 @RequestMapping(value = "api/v1/") // Base URL
 public class UserController {
-    @GetMapping("/getUser")
-    public String getUser(){
-        return "One Users";
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/getusers")
+    public List<UserDTO> getUser(){
+        return userService.getAllUsers();
+    }
+
+    @PostMapping("/adduser")
+    public UserDTO saveUser(@RequestBody UserDTO userDTO){
+        return userService.saveUser(userDTO);
+    }
+
+    @PutMapping("/updateuser")
+    public UserDTO uodateUser(@RequestBody UserDTO userDTO){
+        return userService.updateUser(userDTO);
+    }
+
+    @DeleteMapping("/deleteuser")
+    public String deleteUser(@RequestBody UserDTO userDTO){
+        return userService.deleteUser(userDTO);
     }
 }
