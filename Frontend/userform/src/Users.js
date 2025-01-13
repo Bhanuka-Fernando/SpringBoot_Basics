@@ -13,9 +13,9 @@ const Users = () => {
   }, []);
 
   const getUserData = () => {
-    Axios.get('https://api.example.com/users')
+    Axios.get('https://localhost:8080/api/v1/getusers')
       .then((response) => {
-        setUsers(response.data.response);
+        setUsers(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -29,7 +29,7 @@ const Users = () => {
       name: data.name,
     };
 
-    Axios.post('https://api.example.com/addUser', payload)
+    Axios.post('https://localhost:8080/api/v1/adduser', payload)
       .then(() => {
         console.log('success');
         getUserData();
@@ -48,7 +48,7 @@ const Users = () => {
       name: data.name,
     };
 
-    Axios.post('https://api.example.com/updateUser', payload)
+    Axios.post('https://localhost:8080/api/v1/updateuser', payload)
       .then(() => {
         console.log('success');
         getUserData();
@@ -67,7 +67,7 @@ const Users = () => {
       name: data.name,
     };
 
-    Axios.post('https://api.example.com/deleteUser', payload)
+    Axios.post('https://localhost:8080/api/v1/deleteuser', payload)
       .then(() => {
         console.log('success');
         getUserData();
