@@ -9,7 +9,9 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -23,6 +25,17 @@ public class UserService {
         List<User> userList = userRepo.findAll();
         return modelMapper.map(userList, new TypeToken<List<UserDTO>>(){}.getType());
     }
+
+    // get a single user
+    public UserDTO getAnUser(Long id) throws UserPrincipalNotFoundException {
+        Optional<User> userOptional = userRepo.findById(Math.toIntExact(id));
+        if (userOptional.isPresent()) {
+            return modelMapper.map(userOptional.get(), UserDTO.class);
+        } else {
+            throw new UserPrincipalNotFoundException("user not found with id : " + id);
+        }
+    }
+
     // to save user
     public UserDTO saveUser(UserDTO userDTO){
         userRepo.save(modelMapper.map(userDTO, User.class));
@@ -36,8 +49,8 @@ public class UserService {
     }
 
     // Delete user
-    public String deleteUser(UserDTO userDTO){
-        userRepo.delete(modelMapper.map(userDTO, User.class));
+    public String deleteUser(Long id){
+        userRepo.deleteById(Math.toIntExact(id));
         return "User deleted";
     }
 }
